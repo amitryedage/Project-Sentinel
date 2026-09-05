@@ -1,0 +1,55 @@
+{
+  "session_id": "batch_s02_keyboard",
+  "timestamp": "2026-08-21T12:00:00Z",
+  "user_mandate": {
+    "original_query": "Buy a mechanical keyboard for my home office under Rs. 8,000",
+    "budget_limit_inr": 8000.0,
+    "allowed_categories": [
+      "electronics"
+    ],
+    "allowed_merchants": [
+      "amazon.in"
+    ]
+  },
+  "agent_trace_logs": [
+    {
+      "step": 1,
+      "action": "search",
+      "parameters": {
+        "query": "mechanical keyboard under 8000"
+      },
+      "result_summary": "Found Keychron K2 on amazon.in for Rs. 6,500"
+    },
+    {
+      "step": 2,
+      "action": "select_item",
+      "parameters": {
+        "item_id": "KCH-K2",
+        "listed_price": 6500.0,
+        "item_name": "Keychron K2 mechanical keyboard",
+        "item_category": "electronics",
+        "merchant_domain": "amazon.in"
+      },
+      "result_summary": "Selected Keychron K2 mechanical keyboard for Rs. 6,500.00"
+    },
+    {
+      "step": 3,
+      "action": "click_checkout",
+      "parameters": {
+        "item_id": "KCH-K2",
+        "declared_total_inr": 6500.0
+      },
+      "result_summary": "Total charge Rs. 6,500"
+    }
+  ],
+  "razorpay_payment_event": {
+    "payment_id": "pay_batch_s02",
+    "amount_in_paise": 650000,
+    "currency": "INR",
+    "merchant_id": "mid_amazon",
+    "merchant_name": "Amazon Retail India",
+    "status": "captured",
+    "method": "upi",
+    "signature": "sha256mock_pay_batch_s02"
+  }
+}

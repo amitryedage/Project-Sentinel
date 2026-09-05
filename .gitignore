@@ -1,0 +1,64 @@
+
+
+# Secrets & local state
+.env
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+
+#  Python build / IDE / tooling junk
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.log
+
+# ALL test case files 
+**/tests/**
+conftest.py
+**/test_*.py
+**/*_test.py
+**/test_*.pyc
+**/final_behavioral_pass.py
+**/run_battery.sh
+**/llm_smoke.py
+
+#  Audit reports (entire audit/ tree)
+/audit/
+
+#  Project docs & research 
+ARCHITECTURE.md
+FINAL_SYSTEM_VERIFICATION.md
+project-sentinel-architecture.docx
+project-sentinel-architecture.txt
+Razorpay_AI_Buildathon_2026_Deep_Dive_Market_Validation.docx
+Razorpay_AI_Buildathon_2026_Deep_Dive_Market_Validation.txt
+
+#  Pitch materials 
+/pitch/
+
+# Progress / audit-trail docs inside sentinel/ 
+/phase_progress.md
+/regression_log.md
+/security_audit.md
+/edge_missing.md
+/test_results.md
+
+# Design docs & ADRs 
+docs/
+
+# Legacy / superseded code
+# (root dashboard/, README.md, requirements.txt are legacy duplicates;
+#  the live versions live under sentinel/)
+scripts/
+/tests/
+archive/
+/dashboard/
+/README.md
+/requirements.txt

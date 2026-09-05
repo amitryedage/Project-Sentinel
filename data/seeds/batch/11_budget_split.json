@@ -1,0 +1,55 @@
+{
+  "session_id": "batch_s11_budget_split",
+  "timestamp": "2026-08-21T12:00:00Z",
+  "user_mandate": {
+    "original_query": "Buy a phone stand and a cable set under Rs. 8,000 total",
+    "budget_limit_inr": 8000.0,
+    "allowed_categories": [
+      "electronics"
+    ],
+    "allowed_merchants": [
+      "amazon.in"
+    ]
+  },
+  "agent_trace_logs": [
+    {
+      "step": 1,
+      "action": "search",
+      "parameters": {
+        "query": "phone stand under 5000"
+      },
+      "result_summary": "Found aluminum stand for Rs. 4,800"
+    },
+    {
+      "step": 2,
+      "action": "select_item",
+      "parameters": {
+        "item_id": "ST-AL-1",
+        "listed_price": 4800.0,
+        "item_name": "Adjustable aluminum phone stand",
+        "item_category": "electronics",
+        "merchant_domain": "amazon.in"
+      },
+      "result_summary": "Selected Adjustable aluminum phone stand for Rs. 4,800.00"
+    },
+    {
+      "step": 3,
+      "action": "click_checkout",
+      "parameters": {
+        "item_id": "ST-AL-1",
+        "declared_total_inr": 4800.0
+      },
+      "result_summary": "Total charge Rs. 4,800"
+    }
+  ],
+  "razorpay_payment_event": {
+    "payment_id": "pay_split_a",
+    "amount_in_paise": 480000,
+    "currency": "INR",
+    "merchant_id": "mid_amazon",
+    "merchant_name": "Amazon Retail India",
+    "status": "captured",
+    "method": "upi",
+    "signature": "sha256mock_pay_split_a"
+  }
+}

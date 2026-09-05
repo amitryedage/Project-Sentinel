@@ -1,0 +1,55 @@
+{
+  "session_id": "batch_s04_headphones",
+  "timestamp": "2026-08-21T12:00:00Z",
+  "user_mandate": {
+    "original_query": "Buy a noise-cancelling wireless headset under Rs. 10,000",
+    "budget_limit_inr": 10000.0,
+    "allowed_categories": [
+      "electronics"
+    ],
+    "allowed_merchants": [
+      "flipkart.com"
+    ]
+  },
+  "agent_trace_logs": [
+    {
+      "step": 1,
+      "action": "search",
+      "parameters": {
+        "query": "noise cancelling headset under 10000"
+      },
+      "result_summary": "Found Sony WH-CH520 for Rs. 9,500"
+    },
+    {
+      "step": 2,
+      "action": "select_item",
+      "parameters": {
+        "item_id": "SNY-CH520",
+        "listed_price": 9500.0,
+        "item_name": "Sony noise-cancelling wireless headset",
+        "item_category": "electronics",
+        "merchant_domain": "flipkart.com"
+      },
+      "result_summary": "Selected Sony noise-cancelling wireless headset for Rs. 9,500.00"
+    },
+    {
+      "step": 3,
+      "action": "click_checkout",
+      "parameters": {
+        "item_id": "SNY-CH520",
+        "declared_total_inr": 9500.0
+      },
+      "result_summary": "Total charge Rs. 9,500"
+    }
+  ],
+  "razorpay_payment_event": {
+    "payment_id": "pay_batch_s04",
+    "amount_in_paise": 950000,
+    "currency": "INR",
+    "merchant_id": "mid_flipkart",
+    "merchant_name": "Flipkart Internet Pvt Ltd",
+    "status": "captured",
+    "method": "upi",
+    "signature": "sha256mock_pay_batch_s04"
+  }
+}

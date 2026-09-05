@@ -1,0 +1,22 @@
+{
+  "version": "1.1",
+  "weights": {"w_det": 0.6, "w_sem": 0.4},
+  "tolerances": {
+    "amount_tolerance_paise": 1,
+    "markup_tolerance_pct": 2.0,
+    "repeat_action_min": 3,
+    "semantic_drift_max_overlap": 0.45
+  },
+  "constraints": {
+    "budget": {"severity": "hard"},
+    "merchant": {"severity": "hard"},
+    "category": {"severity": "soft"},
+    "time_window": {"severity": "soft", "window_hours": [8, 20]},
+    "trace_gateway": {"severity": "hard"},
+    "cumulative_budget": {"severity": "hard"},
+    "merchant_drift": {"severity": "hard"},
+    "repeated_action": {"severity": "soft"},
+    "post_checkout": {"severity": "soft"}
+  },
+  "status_thresholds": {"clear_min_tis": 90.0, "flagged_max_tis": 60.0}
+}

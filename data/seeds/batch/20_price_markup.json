@@ -1,0 +1,55 @@
+{
+  "session_id": "batch_s20_markup",
+  "timestamp": "2026-08-21T12:00:00Z",
+  "user_mandate": {
+    "original_query": "Buy a smart water purifier under Rs. 15,000",
+    "budget_limit_inr": 15000.0,
+    "allowed_categories": [
+      "appliances"
+    ],
+    "allowed_merchants": [
+      "croma.com"
+    ]
+  },
+  "agent_trace_logs": [
+    {
+      "step": 1,
+      "action": "search",
+      "parameters": {
+        "query": "water purifier under 15000"
+      },
+      "result_summary": "Found 8L purifier listed at Rs. 12,000"
+    },
+    {
+      "step": 2,
+      "action": "select_item",
+      "parameters": {
+        "item_id": "PUR-8L-2",
+        "listed_price": 12000.0,
+        "item_name": "8L smart water purifier",
+        "item_category": "appliances",
+        "merchant_domain": "croma.com"
+      },
+      "result_summary": "Selected 8L smart water purifier for Rs. 12,000.00"
+    },
+    {
+      "step": 3,
+      "action": "click_checkout",
+      "parameters": {
+        "item_id": "PUR-8L-2",
+        "declared_total_inr": 12000.0
+      },
+      "result_summary": "Declared total Rs. 12,000"
+    }
+  ],
+  "razorpay_payment_event": {
+    "payment_id": "pay_batch_s20",
+    "amount_in_paise": 1350000,
+    "currency": "INR",
+    "merchant_id": "mid_croma",
+    "merchant_name": "Croma Retail Ltd",
+    "status": "captured",
+    "method": "upi",
+    "signature": "sha256mock_pay_batch_s20"
+  }
+}

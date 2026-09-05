@@ -1,0 +1,55 @@
+{
+  "session_id": "batch_s07_webcam",
+  "timestamp": "2026-08-21T12:00:00Z",
+  "user_mandate": {
+    "original_query": "Buy a 4K webcam for video calls under Rs. 6,000",
+    "budget_limit_inr": 6000.0,
+    "allowed_categories": [
+      "electronics"
+    ],
+    "allowed_merchants": [
+      "flipkart.com"
+    ]
+  },
+  "agent_trace_logs": [
+    {
+      "step": 1,
+      "action": "search",
+      "parameters": {
+        "query": "4k webcam under 6000"
+      },
+      "result_summary": "Found Logitech-style 4K cam for Rs. 4,900"
+    },
+    {
+      "step": 2,
+      "action": "select_item",
+      "parameters": {
+        "item_id": "CAM-4K-22",
+        "listed_price": 4900.0,
+        "item_name": "4K webcam with auto-framing",
+        "item_category": "electronics",
+        "merchant_domain": "flipkart.com"
+      },
+      "result_summary": "Selected 4K webcam with auto-framing for Rs. 4,900.00"
+    },
+    {
+      "step": 3,
+      "action": "click_checkout",
+      "parameters": {
+        "item_id": "CAM-4K-22",
+        "declared_total_inr": 4900.0
+      },
+      "result_summary": "Total charge Rs. 4,900"
+    }
+  ],
+  "razorpay_payment_event": {
+    "payment_id": "pay_batch_s07",
+    "amount_in_paise": 490000,
+    "currency": "INR",
+    "merchant_id": "mid_flipkart",
+    "merchant_name": "Flipkart Internet Pvt Ltd",
+    "status": "captured",
+    "method": "upi",
+    "signature": "sha256mock_pay_batch_s07"
+  }
+}

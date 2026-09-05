@@ -1,0 +1,55 @@
+{
+  "session_id": "batch_s06_lamp",
+  "timestamp": "2026-08-21T12:00:00Z",
+  "user_mandate": {
+    "original_query": "Get a bright LED desk lamp for under Rs. 4,000",
+    "budget_limit_inr": 4000.0,
+    "allowed_categories": [
+      "lighting"
+    ],
+    "allowed_merchants": [
+      "croma.com"
+    ]
+  },
+  "agent_trace_logs": [
+    {
+      "step": 1,
+      "action": "search",
+      "parameters": {
+        "query": "led desk lamp under 4000"
+      },
+      "result_summary": "Found rechargeable LED lamp for Rs. 2,400"
+    },
+    {
+      "step": 2,
+      "action": "select_item",
+      "parameters": {
+        "item_id": "LMP-LED-9",
+        "listed_price": 2400.0,
+        "item_name": "Rechargeable LED desk lamp",
+        "item_category": "lighting",
+        "merchant_domain": "croma.com"
+      },
+      "result_summary": "Selected Rechargeable LED desk lamp for Rs. 2,400.00"
+    },
+    {
+      "step": 3,
+      "action": "click_checkout",
+      "parameters": {
+        "item_id": "LMP-LED-9",
+        "declared_total_inr": 2400.0
+      },
+      "result_summary": "Total charge Rs. 2,400"
+    }
+  ],
+  "razorpay_payment_event": {
+    "payment_id": "pay_batch_s06",
+    "amount_in_paise": 240000,
+    "currency": "INR",
+    "merchant_id": "mid_croma",
+    "merchant_name": "Croma Retail Ltd",
+    "status": "captured",
+    "method": "upi",
+    "signature": "sha256mock_pay_batch_s06"
+  }
+}

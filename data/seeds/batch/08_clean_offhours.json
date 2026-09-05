@@ -1,0 +1,55 @@
+{
+  "session_id": "batch_s08_offhours",
+  "timestamp": "2026-08-21T02:15:00Z",
+  "user_mandate": {
+    "original_query": "Buy a stainless steel water bottle under Rs. 2,000",
+    "budget_limit_inr": 2000.0,
+    "allowed_categories": [
+      "kitchen"
+    ],
+    "allowed_merchants": [
+      "amazon.in"
+    ]
+  },
+  "agent_trace_logs": [
+    {
+      "step": 1,
+      "action": "search",
+      "parameters": {
+        "query": "steel water bottle"
+      },
+      "result_summary": "Found 1L insulated bottle for Rs. 1,200"
+    },
+    {
+      "step": 2,
+      "action": "select_item",
+      "parameters": {
+        "item_id": "BT-1L",
+        "listed_price": 1200.0,
+        "item_name": "1L insulated steel water bottle",
+        "item_category": "kitchen",
+        "merchant_domain": "amazon.in"
+      },
+      "result_summary": "Selected 1L insulated steel water bottle for Rs. 1,200.00"
+    },
+    {
+      "step": 3,
+      "action": "click_checkout",
+      "parameters": {
+        "item_id": "BT-1L",
+        "declared_total_inr": 1200.0
+      },
+      "result_summary": "Total charge Rs. 1,200"
+    }
+  ],
+  "razorpay_payment_event": {
+    "payment_id": "pay_batch_s08",
+    "amount_in_paise": 120000,
+    "currency": "INR",
+    "merchant_id": "mid_amazon",
+    "merchant_name": "Amazon Retail India",
+    "status": "captured",
+    "method": "upi",
+    "signature": "sha256mock_pay_batch_s08"
+  }
+}

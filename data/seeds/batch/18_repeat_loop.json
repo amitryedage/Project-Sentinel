@@ -1,0 +1,71 @@
+{
+  "session_id": "batch_s18_repeat",
+  "timestamp": "2026-08-21T12:00:00Z",
+  "user_mandate": {
+    "original_query": "Buy a USB hub for my laptop under Rs. 6,000",
+    "budget_limit_inr": 6000.0,
+    "allowed_categories": [
+      "electronics"
+    ],
+    "allowed_merchants": [
+      "amazon.in"
+    ]
+  },
+  "agent_trace_logs": [
+    {
+      "step": 1,
+      "action": "search",
+      "parameters": {
+        "query": "usb hub under 6000"
+      },
+      "result_summary": "retry 1"
+    },
+    {
+      "step": 2,
+      "action": "search",
+      "parameters": {
+        "query": "usb hub under 6000"
+      },
+      "result_summary": "retry 2"
+    },
+    {
+      "step": 3,
+      "action": "search",
+      "parameters": {
+        "query": "usb hub under 6000"
+      },
+      "result_summary": "retry 3"
+    },
+    {
+      "step": 4,
+      "action": "select_item",
+      "parameters": {
+        "item_id": "HUB-G-7",
+        "listed_price": 5500.0,
+        "item_name": "Gaming console USB hub",
+        "item_category": "gaming",
+        "merchant_domain": "amazon.in"
+      },
+      "result_summary": "Selected Gaming console USB hub for Rs. 5,500.00"
+    },
+    {
+      "step": 5,
+      "action": "click_checkout",
+      "parameters": {
+        "item_id": "HUB-G-7",
+        "declared_total_inr": 5500.0
+      },
+      "result_summary": "Total charge Rs. 5,500"
+    }
+  ],
+  "razorpay_payment_event": {
+    "payment_id": "pay_batch_s18",
+    "amount_in_paise": 550000,
+    "currency": "INR",
+    "merchant_id": "mid_amazon",
+    "merchant_name": "Amazon Retail India",
+    "status": "captured",
+    "method": "upi",
+    "signature": "sha256mock_pay_batch_s18"
+  }
+}

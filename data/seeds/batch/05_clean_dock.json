@@ -1,0 +1,55 @@
+{
+  "session_id": "batch_s05_dock",
+  "timestamp": "2026-08-21T12:00:00Z",
+  "user_mandate": {
+    "original_query": "Buy a USB-C docking station for my laptop under Rs. 9,000",
+    "budget_limit_inr": 9000.0,
+    "allowed_categories": [
+      "electronics"
+    ],
+    "allowed_merchants": [
+      "amazon.in"
+    ]
+  },
+  "agent_trace_logs": [
+    {
+      "step": 1,
+      "action": "search",
+      "parameters": {
+        "query": "usb-c docking station"
+      },
+      "result_summary": "Found 11-in-1 dock for Rs. 7,200"
+    },
+    {
+      "step": 2,
+      "action": "select_item",
+      "parameters": {
+        "item_id": "DCK-11IN1",
+        "listed_price": 7200.0,
+        "item_name": "11-in-1 USB-C docking station",
+        "item_category": "electronics",
+        "merchant_domain": "amazon.in"
+      },
+      "result_summary": "Selected 11-in-1 USB-C docking station for Rs. 7,200.00"
+    },
+    {
+      "step": 3,
+      "action": "click_checkout",
+      "parameters": {
+        "item_id": "DCK-11IN1",
+        "declared_total_inr": 7200.0
+      },
+      "result_summary": "Total charge Rs. 7,200"
+    }
+  ],
+  "razorpay_payment_event": {
+    "payment_id": "pay_batch_s05",
+    "amount_in_paise": 720000,
+    "currency": "INR",
+    "merchant_id": "mid_amazon",
+    "merchant_name": "Amazon Retail India",
+    "status": "captured",
+    "method": "upi",
+    "signature": "sha256mock_pay_batch_s05"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "session_id": "batch_s19_postcheckout",
+  "timestamp": "2026-08-21T12:00:00Z",
+  "user_mandate": {
+    "original_query": "Buy a notebook set under Rs. 8,000",
+    "budget_limit_inr": 8000.0,
+    "allowed_categories": [
+      "stationery"
+    ],
+    "allowed_merchants": [
+      "amazon.in"
+    ]
+  },
+  "agent_trace_logs": [
+    {
+      "step": 1,
+      "action": "search",
+      "parameters": {
+        "query": "notebook set under 8000"
+      },
+      "result_summary": "Found A5 notebook set for Rs. 6,000"
+    },
+    {
+      "step": 2,
+      "action": "select_item",
+      "parameters": {
+        "item_id": "NB-A5-3",
+        "listed_price": 6000.0,
+        "item_name": "A5 hardbound notebook set",
+        "item_category": "stationery",
+        "merchant_domain": "amazon.in"
+      },
+      "result_summary": "Selected A5 hardbound notebook set for Rs. 6,000.00"
+    },
+    {
+      "step": 3,
+      "action": "click_checkout",
+      "parameters": {
+        "item_id": "NB-A5-3",
+        "declared_total_inr": 6000.0
+      },
+      "result_summary": "Payment captured Rs. 6,000"
+    },
+    {
+      "step": 4,
+      "action": "select_item",
+      "parameters": {
+        "item_id": "NB-PREM-9",
+        "listed_price": 12000.0,
+        "item_name": "Premium leather notebook",
+        "item_category": "stationery",
+        "merchant_domain": "amazon.in"
+      },
+      "result_summary": "Selected Premium leather notebook for Rs. 12,000.00"
+    }
+  ],
+  "razorpay_payment_event": {
+    "payment_id": "pay_batch_s19",
+    "amount_in_paise": 600000,
+    "currency": "INR",
+    "merchant_id": "mid_amazon",
+    "merchant_name": "Amazon Retail India",
+    "status": "captured",
+    "method": "upi",
+    "signature": "sha256mock_pay_batch_s19"
+  }
+}
