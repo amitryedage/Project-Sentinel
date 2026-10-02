@@ -10,7 +10,7 @@ import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs
 
-
+# Create the Class which act like the (Clone version of the Razorpay payment)
 class EmulatedRazorpay:
     def __init__(self, key_id: str, key_secret: str, webhook_secret: str,
                  webhook_url: str):
@@ -23,7 +23,7 @@ class EmulatedRazorpay:
         self.request_log: list[dict] = []
         self.lock = threading.Lock()
         self._refund_seq = 0
-
+    # When the payment is start the exeuction at that time that is added in the register 
     def register_payment(self, payment_id: str, amount_in_paise: int,
                          currency: str = "INR", status: str = "captured",
                          merchant_id: str = "mid_emulated") -> None:
@@ -32,7 +32,7 @@ class EmulatedRazorpay:
             "amount": amount_in_paise, "currency": currency,
             "status": status, "merchant_id": merchant_id,
         }
-
+    # Check the auth of the user where user have authication then only payment start the x
     def _auth_ok(self, handler) -> bool:
         raw = handler.headers.get("Authorization", "")
         if not raw.startswith("Basic "):
@@ -44,7 +44,7 @@ class EmulatedRazorpay:
             return False
         return (hmac.compare_digest(user, self.key_id)
                 and hmac.compare_digest(pw, self.key_secret))
-
+    # Function which is excuted at the time of refund 
     def _make_refund(self, body: dict) -> tuple[int, dict]:
       
         pay = self.payments.get(body.get("payment_id", ""))
