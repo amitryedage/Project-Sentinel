@@ -52,9 +52,7 @@ class EmulatedRazorpay:
             amount = int(body.get("amount", 0))
         except (TypeError, ValueError, OverflowError):
             return 400, {"error": {"description": "amount must be an integer"}}
-        # Round-3: the cap check AND the refund insertion happen under the
-        # lock (ThreadingHTTPServer serves concurrent requests) — otherwise
-        # two simultaneous refunds can both pass the cap (TOCTOU).
+       
         with self.lock:
             cum = sum(r["amount"] for r in self.refunds.values()
                       if r.get("payment_id") == body.get("payment_id"))
@@ -79,7 +77,7 @@ class EmulatedRazorpay:
                     "refunded" if cum + amount >= pay["amount"]
                     else "partially_refunded"
                 )
-        # Deliver the signed webhook, Razorpay-style, off the request thread.
+        
         if self.webhook_url and self.webhook_secret:
             threading.Thread(target=self._deliver_webhook, args=(refund,),
                              daemon=True).start()
