@@ -17,8 +17,6 @@ def scenario(
     timestamp: str = TS_DAY, ingests: int = 1,
     extra_ingests: list[dict] | None = None,
 ) -> dict:
-    """Build one scenario doc. `extra_ingests` = additional payloads (same
-    session) to POST after the first, in order (budget-split pattern)."""
     payload = {
         "session_id": session_id,
         "timestamp": timestamp,
