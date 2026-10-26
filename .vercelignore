@@ -1,0 +1,10 @@
+.env*
+.neon
+.venv/
+.verification/
+.turbo/
+output/
+tmp/
+tests/
+scripts/
+GenAI_ISE2_Report_Format.pdf

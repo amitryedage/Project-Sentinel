@@ -27,3 +27,5 @@ from .telemetry import (  # noqa: F401
     Session,
     TraceStep,
 )
+
+from .mock_gateway import MockGatewayOperation  # noqa: F401

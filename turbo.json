@@ -1,0 +1,69 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "futureFlags": {
+    "experimentalPythonWorkspaces": true,
+    "experimentalTaskCommand": true
+  },
+  "tasks": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "lint": {},
+    "format": {
+      "cache": false
+    },
+    "sentinel-api#dev": {
+      "command": [
+        "uv",
+        "--directory",
+        "../..",
+        "run",
+        "--locked",
+        "--package",
+        "sentinel-api",
+        "uvicorn",
+        "sentinel.main:app",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8000",
+        "--reload",
+        "--reload-dir",
+        "apps/api/src"
+      ],
+      "cache": false,
+      "persistent": true,
+      "passThroughEnv": [
+        "API_KEY",
+        "DATABASE_URL",
+        "APP_ENV",
+        "SEMANTIC_MODE",
+        "LLM_*",
+        "RAZORPAY_*",
+        "SENTINEL_SIGNING_SECRET",
+        "RATE_LIMIT_*",
+        "MAX_REQUEST_BYTES",
+        "TRUST_PROXY_HEADERS",
+        "AUTO_CREATE_SCHEMA",
+        "DATABASE_URL_UNPOOLED"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "@sentinel/web#build": {
+      "outputs": [
+        "dist/**"
+      ]
+    },
+    "test": {
+      "cache": false,
+      "passThroughEnv": [
+        "TEST_DATABASE_URL"
+      ]
+    }
+  }
+}

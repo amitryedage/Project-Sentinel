@@ -228,21 +228,10 @@ def get_gateway() -> Gateway:
     global _gateway
     if _gateway is None:
         s = get_settings()
-        if s.razorpay_live:
-            try:
-                _gateway = LiveGateway()
-            except Exception as e:
-                # R2-05: fail soft to mock for the demo (the badge + /health
-                # show the mode) — but a live INTENT degrading to mock must be
-                # loud in the logs, never silent.
-                import logging
-                logging.getLogger("sentinel.razorpay_client").critical(
-                    "RAZORPAY_LIVE=1 but LiveGateway initialization failed (%s: %s) — "
-                    "falling back to the in-memory MOCK gateway. Check "
-                    "RAZORPAY_KEY_ID/RAZORPAY_KEY_SECRET/RAZORPAY_API_BASE.",
-                    type(e).__name__, e,
-                )
-                _gateway = MockGateway()
+        if not s.razorpay_mock:
+            # An explicitly requested provider must never silently become a mock.
+            _gateway = LiveGateway()
         else:
-            _gateway = MockGateway()
+            from .database_mock_gateway import DatabaseMockGateway
+            _gateway = DatabaseMockGateway()
     return _gateway

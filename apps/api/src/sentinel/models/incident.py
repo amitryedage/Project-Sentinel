@@ -1,7 +1,7 @@
 """DB models for evaluation & evidence + policy/run metadata."""
 
 from datetime import datetime
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import (
     JSON,
@@ -16,6 +16,9 @@ from sqlalchemy import (
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..database import Base
+
+if TYPE_CHECKING:
+    from .telemetry import Session
 
 
 class Incident(Base):

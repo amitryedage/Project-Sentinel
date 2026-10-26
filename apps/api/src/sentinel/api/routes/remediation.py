@@ -170,9 +170,9 @@ def approve(remediation_id: int, body: ApproveRequest, db: DbSession = Depends(g
             if pay is None:
                 raise GatewayError("no payment event on session")
             if rem.action == "hold":
-                result = gateway.hold_payment(pay.payment_id, f"sentinel: {reason}")
+                result = gateway.hold_payment(pay.payment_id, f"sentinel remediation {rem.id}: {reason}")
             else:
-                result = gateway.create_refund(pay.payment_id, pay.amount_in_paise, f"sentinel: {reason}")
+                result = gateway.create_refund(pay.payment_id, pay.amount_in_paise, f"sentinel remediation {rem.id}: {reason}")
             # Audit SEC-07: clamp to the column width so an over-long gateway ref
             # cannot DataError the recording commit AFTER the side effect.
             ref = str(result.get("id") or "")[:64]

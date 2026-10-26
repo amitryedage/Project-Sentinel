@@ -37,7 +37,7 @@ flowchart TD
     S2[Stage 2 · Deterministic Gate<br/>budget · merchant · category · trace-vs-gateway<br/>duplicate · cumulative · drift · repeated · post-checkout] --> S3
     S3[Stage 3 · Semantic Alignment<br/>heuristic battery + bounded LLM merge<br/>prompt injection · substitution · markup · drift] --> S4
     S4[Stage 4 · TIS Scoring<br/>clear / review / flagged<br/>evidence packet + hash chain head] --> RM
-    S4 --> DB[(Dashboard<br/>Streamlit)]
+    S4 --> DB[(Dashboard<br/>Vite)]
 
     RM[Remediation Gate<br/>human-in-the-loop approval] --> GW[Gateway<br/>hold / refund]
 ```
@@ -130,8 +130,8 @@ Every derivation — which constraints fired, their breach ratios, the exact pen
 | Database | SQLAlchemy — SQLite (dev) / PostgreSQL (prod via `DATABASE_URL`) | Zero external services for the demo, drop-in swap for production |
 | LLM |  Ollama-native endpoint | Bounded, single call, strict JSON contract, deterministic `mock` fallback |
 | Payments | Razorpay test mode + mock/emulated gateway | Real test-mode payment and webhook for the demo; enforces provider invariants (refund caps, TOCTOU-safe) in every mode |
-| Dashboard | Streamlit | Fast timeline-replay UI; renders all untrusted content as plain text |
-| Tests | pytest | 354 checks across 10 suites, green on SQLite and PostgreSQL |
+| Dashboard | Vite + vanilla JavaScript | Incident board, trace replay, score details, evidence verification and download |
+| Tests | pytest + HTTP deployment check | Authentication, request guards, database setup, persistence and refund caps |
 
 ---
 
@@ -148,39 +148,128 @@ See the full [architecture doc](./project-sentinel-architecture.txt) for the con
 
 ## Repository layout
 
-```
-sentinel/
-├── main.py, config.py, database.py, security.py
-├── api/routes/       # telemetry · incidents · remediation · webhook · export
-├── engines/           # deterministic · semantic · llm · scoring · evidence
-├── services/          # pipeline · integrity (hash chain) · razorpay_client · webhook_verify
-├── models/            # SQLAlchemy: telemetry · incident · ledger · webhook registry
-├── schemas/           # ingest contract, evidence shape
-├── dashboard/         # Streamlit app + defensive HTTP client
-├── tools/             # emulated Razorpay, seed batch, LLM smoke test
-├── data/config/       # policy.json, merchant_registry.json
-├── data/seeds/batch/  # 20 scenario payloads + manifest
-└── tests/             # 10 suites, 354 checks
+```text
+Project-Sentinel/
+├── app.py               # Vercel ASGI entrypoint; API + built dashboard
+├── vercel.json          # FastAPI deployment and frontend build
+├── neon.ts              # Neon service configuration (PostgreSQL)
+├── pyproject.toml       # uv workspace and shared Python tools
+├── uv.lock              # Python dependency lockfile
+├── package.json         # npm workspace, Neon tools and Turbo CLI
+├── turbo.json           # Native Python + JavaScript tasks
+├── apps/api/src/sentinel/ # API, engines, models, config/seeds and tools
+├── apps/web/            # Minimal operator dashboard (Vite)
+├── scripts/verify_deployment.py
+└── tests/               # Deployment and security regression checks
 ```
 
----
+## Local setup
 
-## Run it
+Use Python 3.12, uv, and Node.js 22.12+ with npm 11. Run from this repository root:
 
 ```bash
-export API_KEY=…
-python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-.venv/bin/pytest -q                                  # test suite
-.venv/bin/uvicorn sentinel.main:app --port 8000       # API
-streamlit run sentinel/dashboard/app.py               # dashboard
-python3 sentinel/tools/seed_batch.py --base … --key … # 20-scenario E2E seed
+uv sync --all-packages --locked
+npm ci
+# For local SQLite development, copy the example and set an operator key:
+cp .env.example .env
+# For Neon, follow the linked project setup below instead.
+npm run build
+npm run db:init
+npm run dev
 ```
 
-## Status
+The dashboard runs at http://127.0.0.1:5173 and proxies API requests to port 8000.
+Enter your API_KEY in the dashboard's operator-key field. The key is retained
+only in this tab's memory; it is never embedded in the bundle or stored in
+localStorage. Disconnect clears the key and loaded case data. This dashboard
+uses the existing shared operator-key model; it is not a multi-user login system.
 
-**Slice 1 (Evidence Engine): complete** — 4-stage pipeline, hash-chained ledger, TIS scoring, signed evidence export, gateway with mock/live strategies, human-in-the-loop remediation, webhook receiver. 354 tests green on SQLite and PostgreSQL across three audit rounds.
+To serve the production frontend and API together locally:
 
-**Repository policy:** local-only — no remote push, all work stays on-machine.
+```bash
+uv run --locked uvicorn app:app --host 127.0.0.1 --port 8000
+```
+
+Settings load .env, then .env.local, with process environment variables taking
+precedence. Keep secrets in ignored files and Vercel's server-side environment.
+The new setup preserves the native uv integration introduced in Turborepo 2.11;
+Python packages have no package.json wrappers. The experimental Python flags
+are enabled in turbo.json.
+
+## Neon PostgreSQL
+
+The project declares only PostgreSQL. Keep the generated neon.ts configuration.
+To link this repository to an existing authorized Neon project:
+
+```bash
+neon init -y --org-id YOUR_ORG --project-id YOUR_PROJECT --branch production --services postgres
+neon deploy
+```
+
+The CLI pulls DATABASE_URL, DATABASE_URL_UNPOOLED and NEON_BRANCH into .env.local
+(or an existing .env). Add API_KEY and a separate SENTINEL_SIGNING_SECRET to the
+same ignored file. Preserve existing values when pulling environment updates.
+
+The API uses the pooled DATABASE_URL for requests through SQLAlchemy and
+psycopg. Standard postgres:// and postgresql:// URLs are normalized to the
+psycopg driver while retaining TLS options. NullPool avoids idle connections
+in each serverless instance. Schema initialization uses DATABASE_URL_UNPOOLED
+when supplied. Test schema changes on a temporary Neon branch first, then run
+`npm run db:init` for the intended deployment branch. The initializer only
+creates missing tables; future schema alterations need versioned migrations.
+
+## Vercel deployment
+
+Import the repository with its root directory set to the repository root.
+vercel.json selects FastAPI and builds apps/web; app.py exports the API and
+mounts the generated frontend after API routes. Both share one origin. There
+is no Cloudflare service or configuration.
+
+Configure Preview and Production variables separately:
+
+| Variable | Value |
+| --- | --- |
+| DATABASE_URL | Neon pooled PostgreSQL URL, including sslmode=require |
+| API_KEY | Random operator key; never a VITE_ or NEXT_PUBLIC_ variable |
+| SENTINEL_SIGNING_SECRET | Separate random evidence-signing secret |
+| APP_ENV | production |
+| AUTO_CREATE_SCHEMA | false |
+| RAZORPAY_MOCK | 1 for a demo; 0 with explicit Razorpay credentials |
+| SEMANTIC_MODE | mock, or llm with a hosted HTTPS endpoint and model |
+
+See .env.vercel.example for names, without real credentials. Initialize the
+selected database before deploying. Vercel sets VERCEL=1 automatically; the
+app rejects SQLite there and skips schema creation on cold starts. Production
+disables interactive API docs. Vercel's build does not change the database.
+Use a separate Neon branch for preview deployments to isolate preview data.
+
+Mock gateway operations persist in PostgreSQL. Row locks serialize refund
+caps across instances; mock operations do not move real money. Request rate
+limits in the app are per-instance; use Vercel Firewall for a global limit.
+For live payments, configure RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET and the webhook
+secret explicitly; invalid provider configuration fails instead of becoming a
+mock. Webhook URL: https://YOUR_DOMAIN/api/v1/webhooks/razorpay.
+
+## Verification
+
+```bash
+npm run build
+npm run lint
+npm test
+uv run --locked python scripts/verify_deployment.py --env-file .env.local
+```
+
+Automated tests use isolated local SQLite files and never use the pulled Neon
+production URL. The HTTP verification script starts the app against the chosen
+PostgreSQL database, checks the built dashboard, authentication, ingest, trace,
+evidence, export, human-approved mock refunds, API restart persistence, and the
+refund cap. It creates uniquely named deployment_check_* demo incidents, always
+uses mock payments, and never calls a live payment provider. Initialize a new
+test database first, or pass --initialize. No credentials are printed.
+
+The original dashboard and historical 354-test suite described in earlier
+versions were absent from this checkout. The current dashboard and regression
+checks are included here.
 
 ---
 

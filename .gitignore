@@ -2,6 +2,9 @@
 
 # Secrets & local state
 .env
+.env.*
+!.env.example
+!.env.vercel.example
 *.db
 *.db-wal
 *.db-shm
@@ -18,16 +21,6 @@ venv/
 .mypy_cache/
 .ruff_cache/
 *.log
-
-# ALL test case files 
-**/tests/**
-conftest.py
-**/test_*.py
-**/*_test.py
-**/test_*.pyc
-**/final_behavioral_pass.py
-**/run_battery.sh
-**/llm_smoke.py
 
 #  Audit reports (entire audit/ tree)
 /audit/
@@ -53,12 +46,13 @@ Razorpay_AI_Buildathon_2026_Deep_Dive_Market_Validation.txt
 # Design docs & ADRs 
 docs/
 
-# Legacy / superseded code
-# (root dashboard/, README.md, requirements.txt are legacy duplicates;
-#  the live versions live under sentinel/)
-scripts/
-/tests/
-archive/
-/dashboard/
-/README.md
-/requirements.txt
+# Workspace artifacts
+node_modules/
+.turbo/
+dist/
+/data/
+
+.vercel/
+.neon
+
+.verification/

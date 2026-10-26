@@ -40,7 +40,8 @@ async def lifespan(app: FastAPI):
             "SENTINEL_SIGNING_SECRET not set — dispute export signatures fall back "
             "to the API key; configure an out-of-band signing secret in production"
         )
-    init_db()
+    if settings.auto_create_schema is True or (settings.auto_create_schema is None and not settings.vercel):
+        init_db()
     logger.info("Sentinel started (gateway=%s, semantic=%s, db=%s)",
                 get_gateway().mode, settings.semantic_mode,
                 settings.database_url.split("@")[-1])

@@ -8,12 +8,15 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_file=(".env", ".env.local"), extra="ignore")
 
     app_env: str = "dev"
+    vercel: bool = False
+    auto_create_schema: bool | None = None
 
     # Database — SQLite for demo (ADR-0001); Postgres-swappable via URL only.
-    database_url: str = "sqlite:///./sentinel/data/sentinel.db"
+    database_url: str = "sqlite:///./data/sentinel.db"
+    database_url_unpooled: str = ""
 
    
     api_key: str = ""

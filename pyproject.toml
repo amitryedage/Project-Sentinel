@@ -1,0 +1,31 @@
+[project]
+name = "sentinel-deployment"
+version = "0.2.0"
+requires-python = ">=3.12"
+dependencies = ["sentinel-api"]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+sentinel-api = { workspace = true }
+
+[tool.vercel]
+entrypoint = "app:app"
+
+[tool.uv.workspace]
+members = ["apps/api"]
+
+[tool.turbo]
+name = "sentinel-workspace"
+
+[dependency-groups]
+dev = ["ruff>=0.14,<1", "pytest>=8,<10"]
+
+[tool.ruff.lint]
+# Start with correctness checks without reformatting the existing codebase.
+select = ["E9", "F63", "F7", "F82"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

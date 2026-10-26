@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "fastapi",
+  "buildCommand": "npm ci && npm run build --workspace @sentinel/web",
+  "functions": {
+    "app.py": {
+      "maxDuration": 60,
+      "includeFiles": "apps/**"
+    }
+  }
+}
